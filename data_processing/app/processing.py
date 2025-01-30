@@ -1,6 +1,6 @@
 import pandas as pd
 
-def csv_xtractor(route=None, conn=None): 
+def csv_uploader(route=None, conn=None): 
     if conn == None or route == None:
         return print("Sin conexión a la base de datos, o ruta de CSV Invalida") 
     
@@ -10,3 +10,6 @@ def csv_xtractor(route=None, conn=None):
     except Exception as e:
         print(e)
         return
+    
+def csv_xtractor():
+    pass

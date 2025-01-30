@@ -1,4 +1,4 @@
-# Usa la imagen oficial de PostgreSQL
+# Imagen oficial de PostgreSQL
 FROM postgres:latest
 
 # Define las variables de entorno para PostgreSQL
