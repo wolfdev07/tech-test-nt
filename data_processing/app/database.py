@@ -1,11 +1,10 @@
-import psycopg2
+from sqlalchemy import create_engine
 
-conn = psycopg2.connect(
-    dbname="payments",
-    user="thor",
-    password="th0r*2025",
-    host="127.0.0.1",
-    port="5435"
-)
-
-cursor = conn.cursor()
+def get_connection(pg_url=None):
+    if pg_url == None:
+        return print("Url de conexión invalida.")
+    try:
+        engine = create_engine(url=pg_url)
+        return engine
+    except Exception as e:
+        return print(e)

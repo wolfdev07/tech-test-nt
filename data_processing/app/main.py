@@ -1,10 +1,13 @@
 import os
 import colorama
+from decouple import config
 from processing import csv_uploader, csv_xtractor
-from database import conn
+from database import get_connection
 
 def data_processing():
-    csv_url = os.path.join(os.getcwd(), "data.csv")
+    csv_url = os.path.join(os.getcwd(), "data_prueba_tecnica.csv")
+    pg_url = config("PG_URL")
+
 
     print(colorama.Fore.CYAN + "=" * 40)
     print(colorama.Fore.GREEN + "   *** PROCESADOR DE CSV ***")
@@ -24,7 +27,7 @@ def data_processing():
                 CHARGE DATABASE FROM CSV
             """
             print(colorama.Fore.CYAN + "\nIniciando carga...\n")
-            csv_uploader(conn=conn, route=csv_url)
+            csv_uploader(conn=get_connection(pg_url=pg_url), route=csv_url)
             return
         elif user_selection == "2":
             """
