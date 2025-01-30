@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres_docker
+    restart: always
+    environment:
+      POSTGRES_USER: thor
+      POSTGRES_PASSWORD: th0r*2025
+      POSTGRES_DB: payments
+    ports:
+      - "5435:5432"  # Mapea el puerto del host 5433 al interno 5432 del contenedor
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
