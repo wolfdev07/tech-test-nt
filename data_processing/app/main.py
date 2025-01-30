@@ -1,7 +1,7 @@
 import os
 import colorama
 from decouple import config
-from processing import csv_uploader, csv_xtractor
+from processing import csv_uploader, db_xtractor
 from database import get_connection
 
 def data_processing():
@@ -34,7 +34,7 @@ def data_processing():
                 EXTRACT DATABASE TO CSV
             """
             print(colorama.Fore.CYAN + "\nIniciando extracción...\n")
-            csv_xtractor()
+            db_xtractor(conn=get_connection(pg_url=pg_url))
             return
         elif user_selection == "3":
             """
