@@ -7,7 +7,7 @@ from models import init_db
 
 def data_processing():
     csv_url = os.path.join(os.getcwd(), "data_prueba_tecnica.csv")
-    cargo_csv = os.path.join(os.getcwd(), "cargo.csv")
+    output_url = os.path.join(os.getcwd(), "output.csv")
     engine = get_connection(pg_url=config("PG_URL", default=None))
 
     if engine is None:
@@ -41,14 +41,14 @@ def data_processing():
             db_xtractor(conn=engine)
 
         elif user_selection == "3":
-            if os.path.exists(cargo_csv):
-                data_transformation(route=cargo_csv, conn=engine)
+            if os.path.exists(output_url):
+                data_transformation(route=output_url, conn=engine)
                 print(colorama.Fore.GREEN + "Transformación realizada correctamente.\n")
             else:
                 print("❌ El archivo de transformación no existe.")
 
         elif user_selection == "4":
-            disperse_data(route=cargo_csv, conn=engine)
+            disperse_data(route=output_url, conn=engine)
 
         elif user_selection == "5":
             print(colorama.Fore.RED + "Saliendo del programa...\n")
