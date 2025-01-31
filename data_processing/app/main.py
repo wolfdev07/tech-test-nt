@@ -1,13 +1,14 @@
 import os
 import colorama
 from decouple import config
-from processing import csv_uploader, db_xtractor
+from processing import csv_uploader, db_xtractor, data_transformation, disperse_data
 from database import get_connection
+from models import init_db
 
 def data_processing():
     csv_url = os.path.join(os.getcwd(), "data_prueba_tecnica.csv")
-    pg_url = config("PG_URL")
-
+    cargo_csv = os.path.join(os.getcwd(), "cargo.csv")
+    engine = get_connection(pg_url=config("PG_URL") if config("PG_URL") else None)
 
     print(colorama.Fore.CYAN + "=" * 40)
     print(colorama.Fore.GREEN + "   *** PROCESADOR DE CSV ***")
@@ -17,8 +18,9 @@ def data_processing():
         print(colorama.Fore.YELLOW + "Elige la opción deseada:")
         print("  (1) Cargar CSV a la base de datos")
         print("  (2) Extraer Base de datos a CSV")
-        print("  (3) Cambiar ubicación de CSV")
-        print("  (4) Salir\n")
+        print("  (3) Transformar Información")
+        print("  (4) Dispersar Información")
+        print("  (5) Salir\n")
 
         user_selection = input(">> ")
         
@@ -27,22 +29,27 @@ def data_processing():
                 CHARGE DATABASE FROM CSV
             """
             print(colorama.Fore.CYAN + "\nIniciando carga...\n")
-            csv_uploader(conn=get_connection(pg_url=pg_url), route=csv_url)
-            return
+            csv_uploader(conn=engine, route=csv_url)
         elif user_selection == "2":
             """
                 EXTRACT DATABASE TO CSV
             """
             print(colorama.Fore.CYAN + "\nIniciando extracción...\n")
-            db_xtractor(conn=get_connection(pg_url=pg_url))
-            return
+            db_xtractor(conn=engine)
         elif user_selection == "3":
             """
-                CHANGE CSV LOCATION
+                DATA TRANSFORMATION
             """
-            csv_url = input(colorama.Fore.BLUE + "Ingrese la nueva ruta del CSV: ")
-            print(colorama.Fore.GREEN + "Ruta actualizada correctamente.\n")
+            data_transformation(route=cargo_csv, conn=engine)
+            print(colorama.Fore.GREEN + "Transformación realizada correctamente.\n")
         elif user_selection == "4":
+            """
+                DISPERCE DATA
+            """
+            init_db(engine=engine)
+            disperse_data(route=cargo_csv, conn=engine)
+            print(colorama.Fore.GREEN + "Disperción realizada correctamente.\n")
+        elif user_selection == "5":
             """
                 EXIT PROGRAM
             """
