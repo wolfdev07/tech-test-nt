@@ -1,10 +1,12 @@
 from sqlalchemy import create_engine
 
 def get_connection(pg_url=None):
-    if pg_url == None:
-        return print("Url de conexión invalida.")
+    if not pg_url:
+        print("❌ URL de conexión inválida.")
+        return None
     try:
-        engine = create_engine(url=pg_url)
+        engine = create_engine(pg_url)
         return engine
     except Exception as e:
-        return print(e)
+        print(f"❌ Error en la conexión a la base de datos: {e}")
+        return None

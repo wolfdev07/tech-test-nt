@@ -7,15 +7,15 @@ Base = declarative_base()
 class Company(Base):
     __tablename__ = "companies"
 
-    id = Column(String, primary_key=True)
+    id = Column(String(40), primary_key=True)
     name = Column(String(130), nullable=False)
     charges = relationship("Charge", back_populates="company", cascade="all, delete")
 
 class Charge(Base):
     __tablename__ = "charges"
 
-    id = Column(String(24), primary_key=True)
-    company_id = Column(String(24), ForeignKey("companies.id"), nullable=False)
+    id = Column(String(40), primary_key=True)
+    company_id = Column(String(24), ForeignKey("companies.id", ondelete="CASCADE"), nullable=False)
     amount = Column(DECIMAL(16, 2), nullable=False)
     status = Column(String(30), nullable=False)
     created_at = Column(TIMESTAMP, nullable=False)
